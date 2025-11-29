@@ -10,7 +10,7 @@ def producto_imagen_path(instance, filename):
 # --- NUEVO: Modelo para Categorías/Clases de Productos ---
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, unique=True, verbose_name="Nombre de la Categoría")
-    descripcion = models.TextField(blank=True, null=True, verbose_name="Descripción")
+    descripcion = models.TextField(blank=True, verbose_name="Descripción")
 
     class Meta:
         verbose_name = "Categoría de Producto"
