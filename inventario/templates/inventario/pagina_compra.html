@@ -1,63 +1,113 @@
 <!DOCTYPE html>
+
 <html lang="es">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Catálogo | Pañalera</title>
+
+    <!-- Carga de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
+
         body {
+
             font-family: 'Inter', sans-serif;
+
             background-color: #e5e7eb;
         }
+
         /* Aplica una altura mínima al contenedor del producto para evitar saltos de fila */
-        .product-card {
-            min-height: 400px; /* Ajusta esta altura si el contenido más largo no cabe */
-        }
+        /* Eliminamos la min-height fija para que el diseño sea más fluido y dependa de flex-grow */
+        
         .card-shadow {
+
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+
         }
+
         .text-colombian-price {
-            color: #10B981;
+
+            color: #10B981; /* Un color verde vibrante */
+
         }
+
     </style>
+
 </head>
+
 <body class="min-h-screen flex flex-col">
 
+
+
     <nav class="bg-indigo-700 p-4 shadow-xl">
+
         <div class="container mx-auto flex justify-between items-center">
+
             <h1 class="text-3xl font-extrabold text-white tracking-wider">Pañalera</h1>
+
             <div>
+
                 {% if user.is_authenticated %}
+
                 <span class="text-white text-sm mr-3">Hola, {{ user.username }}</span>
+
                 <a href="{% url 'logout' %}" class="bg-indigo-500 text-white px-3 py-1 rounded-full font-medium hover:bg-indigo-400 transition duration-150 text-sm">Cerrar Sesión</a>
+
                 {% else %}
+
                 <a href="{% url 'login' %}" class="bg-indigo-500 text-white px-3 py-1 rounded-full font-medium hover:bg-indigo-400 transition duration-150 text-sm">Iniciar Sesión</a>
+
                 {% endif %}
+
             </div>
+
         </div>
+
     </nav>
 
+
+    <!-- CORRECCIÓN: 'clase' a 'class' y 'contenedor' a 'container' (aunque el original ya lo hacía) -->
     <div class="container mx-auto p-6 flex-grow">
+
+        <!-- CORRECCIÓN: 'clase' a 'class' -->
         <h2 class="text-4xl font-black text-gray-800 mb-8 border-b-4 border-indigo-500 pb-3">
+
             Nuestro Catálogo <span class="text-indigo-600 font-light text-xl block sm:inline"></span>
+
         </h2>
         
+        <!-- CORRECCIÓN: {% si %} a {% if %} -->
         {% if productos %}
+
+        <!-- CORRECCIÓN: 'clase' a 'class' -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
 
+
+            <!-- CORRECCIÓN: {% para producto en productos %} a {% for producto in productos %} -->
             {% for producto in productos %}
-            <div class="bg-white rounded-xl card-shadow overflow-hidden transition duration-300 hover:shadow-2xl flex flex-col"> <!-- Hacemos la tarjeta flex para que el contenido ocupe todo el espacio -->
+            <!-- CORRECCIÓN: 'clase' a 'class' y clases traducidas -->
+            <div class="bg-white rounded-xl card-shadow transition duration-300 hover:shadow-2xl overflow-hidden flex flex-col"> 
+
 
                 <!-- Imagen correcta -->
+                <!-- CORRECCIÓN: 'clase' a 'class' -->
                 <div class="bg-indigo-100 h-48 w-full flex items-center justify-center overflow-hidden">
 
+
+                    <!-- CORRECCIÓN: {% si producto.imagen %} a {% if producto.imagen %} -->
                     {% if producto.imagen %}
                         <img 
                             src="{{ producto.imagen.url }}" 
                             alt="{{ producto.nombre }}"
                             class="object-cover w-full h-full"
                         >
+                    <!-- CORRECCIÓN: {% más %} a {% else %} -->
                     {% else %}
                         <img 
                             src="https://placehold.co/400x200/6366f1/ffffff/png?text=Sin+Imagen" 
@@ -66,34 +116,52 @@
                         >
                     {% endif %}
 
+
                 </div>
                 
                 <!-- AQUI COMIENZA EL CAMBIO CLAVE: h-full y flex-col -->
+                <!-- CORRECCIÓN: 'clase' a 'class' -->
                 <div class="p-6 flex flex-col flex-grow">
                     
                     <!-- Contenido Superior (el que puede variar de altura) -->
+                    <!-- CORRECCIÓN: 'clase' a 'class' y 'crecimiento flexible' a 'flex-grow' -->
                     <div class="flex-grow">
+                        <!-- CORRECCIÓN: clases traducidas -->
                         <span class="inline-block bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+
                             <!-- CORRECCIÓN: Usamos producto.categoria.nombre en lugar de producto.tipo -->
+
                             {{ producto.categoria.nombre }}
+
                         </span>
                         
+                        <!-- CORRECCIÓN: 'clase' a 'class' -->
                         <h3 class="text-2xl font-bold text-gray-900 mb-1">{{ producto.nombre }}</h3>
-                        <p class="text-base text-gray-500 mb-4">{{ producto.variacion }}</p>
+                        <p class="text-base text-gray-500 mb-4">{{ producto.variación }}</p>
                     </div>
                     
                     <!-- Sección de Precio y Stock (Siempre al final del contenido superior) -->
+                    <!-- CORRECCIÓN: 'clase' a 'class' -->
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 border-t pt-4">
 
+                        <!-- CORRECCIÓN: 'clase' a 'class' y atributo 'precio-datos' a 'data-price' -->
                         <span class="text-3xl font-extrabold text-colombian-price tracking-tight" data-price="{{ producto.precio|floatformat:0 }}">
+
                             $ {{ producto.precio|floatformat:0 }}
+
                         </span>
                         
-                        <div class="mt-3 sm:mt-0 text-right">
+                        <!-- CORRECCIÓN: 'clase' a 'class' y 'texto-derecha' eliminado, se usan clases flex para esto -->
+                        <div class="mt-3 sm:mt-0 sm:text-right">
+                            <!-- CORRECCIÓN: {% si producto.stock < 10 %} a {% if producto.stock < 10 %} -->
                             {% if producto.stock < 10 %}
+                            <!-- CORRECCIÓN: 'clase' a 'class' y 'redondeado-lg' -->
                             <span class="text-xs font-bold text-red-600 bg-red-100 px-3 py-1 rounded-lg">
+
                                 ¡Stock Bajo! ({{ producto.stock }})
+
                             </span>
+                            <!-- CORRECCIÓN: {% más %} a {% else %} -->
                             {% else %}
                             <span class="text-sm text-gray-600">En stock: {{ producto.stock }} uds</span>
                             {% endif %}
@@ -102,53 +170,94 @@
                     
                     <!-- Botón (Siempre alineado al fondo gracias a flex-grow) -->
                     <div> 
+                        <!-- CORRECCIÓN: 'botón' a 'button', 'clase' a 'class' y clases traducidas -->
                         <button class="w-full bg-indigo-500 text-white py-3 rounded-lg font-medium hover:bg-indigo-600 transition duration-200 opacity-80 cursor-default" disabled>
+
                             Ver Detalles
+
                         </button>
 
+
                         <p class="text-xs text-gray-400 mt-2 text-center">
+
                             Inicie sesión como administrador para registrar ventas.
+
                         </p>
                     </div>
+
 
                 </div>
                 <!-- FIN DEL CAMBIO CLAVE -->
 
+
             </div>
             {% endfor %}
 
+
         </div>
+        <!-- CORRECCIÓN: {% más %} a {% else %} -->
         {% else %}
 
+
         <div class="bg-white p-10 rounded-xl shadow-lg text-center">
+
             <p class="text-xl text-gray-600 font-medium">🛒 Lo sentimos, no hay productos disponibles.</p>
+
         </div>
+
 
         {% endif %}
     </div>
 
-    <footer class="bg-gray-300 p-4 text-center text-sm text-gray-700">
+
+    <footer class="bg-gray-300 p-4 text-center text-sm text-gray-700 mt-auto">
+
         © 2025 Pañalera Project | Versión de Catálogo Público
+
     </footer>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+
+            // CORRECCIÓN: El selector ahora usa 'data-price' en lugar de 'precio-datos'
             const priceElements = document.querySelectorAll('[data-price]');
+
             priceElements.forEach(element => {
+
                 const rawPrice = element.getAttribute('data-price');
+
                 if (rawPrice) {
+
                     try {
+
                         // Usamos la configuración regional de Colombia para el formato de miles y decimales
+
                         const number = parseInt(rawPrice);
-                        const formattedPrice = number.toLocaleString('es-CO');
+                        // Asegura que la conversión y el formato se hacen correctamente
+                        const formattedPrice = number.toLocaleString('es-CO', {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0
+                        });
+                        
                         element.textContent = `$ ${formattedPrice}`;
+
                     } catch (e) {
+
                          // Manejo de error si la conversión falla
+                         console.error("Error al formatear el precio:", e);
+
                     }
+
                 }
+
             });
+
         });
+
     </script>
 
+
 </body>
+
 </html>
