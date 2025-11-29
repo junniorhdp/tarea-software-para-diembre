@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporte de Ventas | Pañalera Admin</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; }
+        h1, h2 { color: #333; }
+        .summary-box { 
+            border: 2px solid #007bff; 
+            padding: 15px; 
+            margin-bottom: 25px; 
+            background-color: #e9f5ff; 
+            border-radius: 8px;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-bottom: 30px; 
+            background-color: white; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td { 
+            border: 1px solid #ddd; 
+            padding: 10px; 
+            text-align: left;
+        }
+        th { 
+            background-color: #007bff; 
+            color: white; 
+            text-transform: uppercase;
+        }
+        .total-row td { 
+            font-weight: bold; 
+            background-color: #ccf;
+        }
+        .back-link { 
+            display: inline-block; 
+            margin-bottom: 20px; 
+            color: #007bff; 
+            text-decoration: none; 
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    
+    <h1>📈 Reporte de Ventas</h1>
+    <a href="{% url 'dashboard' %}" class="back-link">← Volver al Dashboard</a>
+
+    <div class="summary-box">
+        <h2>Resumen General</h2>
+        <p>Total de Transacciones: <strong>{{ cantidad_transacciones }}</strong></p>
+        <p style="font-size: 1.2em; color: green;">Ingreso Total Generado: 
+            <strong>COP {{ total_general_vendido|floatformat:2 }}</strong>
+        </p>
+    </div>
+
+    <hr>
+
+    <h2>📊 Productos Más Vendidos</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Variación</th>
+                <th>Cantidad Total Vendida</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in ventas_agrupadas %}
+            <tr>
+                <td>{{ item.producto__nombre }}</td>
+                <td>{{ item.producto__variacion|default:"N/A" }}</td>
+                <td>{{ item.total_cantidad_vendida }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No hay datos de ventas registrados para agrupar.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+    
+    <h2>📋 Historial Detallado de Transacciones</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha Venta</th>
+                <th>Producto</th>
+                <th>Variación</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Total Venta</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venta in ventas %}
+            <tr>
+                <td>{{ venta.fecha_venta|date:"d/m/Y" }}</td>
+                <td>{{ venta.producto.nombre }}</td>
+                <td>{{ venta.producto.variacion|default:"N/A" }}</td>
+                <td>{{ venta.cantidad }}</td>
+                <td>COP {{ venta.precio_unitario|floatformat:2 }}</td>
+                <td>COP **{{ venta.total_venta|floatformat:2 }}**</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No hay transacciones de ventas registradas en la base de datos.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

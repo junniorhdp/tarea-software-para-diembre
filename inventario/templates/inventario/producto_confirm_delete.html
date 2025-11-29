@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar Eliminación</title>
+</head>
+<body>
+    <h1>⚠️ Confirmar Eliminación</h1>
+
+    <p>¿Estás seguro que deseas eliminar el producto **{{ producto.nombre }} ({{ producto.variacion }})**?</p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" style="background-color: red; color: white; padding: 10px;">Sí, Eliminar Permanentemente</button>
+        <a href="{% url 'dashboard' %}" style="padding: 10px; margin-left: 10px;">Cancelar</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }} | Pañalera Admin</title>
+    <style>
+        /* El código CSS de tu login (Se mantiene igual) */
+        :root {
+            --primary: #000000;
+            --secondary: #FFFFFF;
+            --accent: #FF5E5B;
+            --shadow: 8px 8px 0px var(--primary);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            background-color: var(--secondary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid var(--primary);
+            padding: 40px 30px;
+            background-color: var(--secondary);
+            box-shadow: var(--shadow);
+            position: relative;
+            border-radius: 12px;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: -6px;
+            bottom: -6px;
+            border: 1px solid var(--primary);
+            z-index: -1;
+            border-radius: 12px;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        /* Aplicar estilos a los campos generados por Django */
+        input[type="text"], input[type="password"], input[type="email"] { 
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--primary);
+            background-color: var(--secondary);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+            box-shadow: 4px 4px 0px var(--primary);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent);
+            color: var(--secondary);
+            border: 2px solid var(--primary);
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            box-shadow: 4px 4px 0px var(--primary);
+            transform: translate(-2px, -2px);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--primary);
+        }
+
+        .footer a {
+            color: var(--primary);
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        
+        /* Estilo para los mensajes de error */
+        .error-list {
+            list-style: none;
+            color: var(--accent);
+            font-size: 12px;
+            margin-top: 5px;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    
+    <form method="POST" action="{% url 'register' %}">
+        
+        {% csrf_token %} 
+        
+        <div class="login-container">
+            <h1>REGISTRO</h1>
+            
+            <!-- Errores de formulario que no están ligados a un campo (e.g., password mismatch) -->
+            {% if form.non_field_errors %}
+                <div style="color: var(--accent); margin-bottom: 15px; font-weight: bold; text-align: center;">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- 1. CAMPO USUARIO (username) -->
+            <div class="input-group">
+                <label for="{{ form.username.id_for_label }}">USUARIO</label>
+                {{ form.username }}
+                {{ form.username.errors }}
+            </div>
+
+            <!-- 2. CAMPO CORREO ELECTRÓNICO (email) -->
+            <div class="input-group">
+                <label for="{{ form.email.id_for_label }}">CORREO ELECTRÓNICO</label>
+                {{ form.email }}
+                {{ form.email.errors }}
+            </div>
+
+            <!-- 3. CAMPO CONTRASEÑA (CORREGIDO: usa password1) -->
+            <div class="input-group">
+                <label for="{{ form.password1.id_for_label }}">CONTRASEÑA</label>
+                {{ form.password1 }}
+                {{ form.password1.errors }}
+            </div>
+            
+            <!-- 4. CAMPO CONFIRMAR CONTRASEÑA (CORREGIDO: usa password2) -->
+            <div class="input-group">
+                <label for="{{ form.password2.id_for_label }}">CONFIRMAR CONTRASEÑA</label>
+                {{ form.password2 }}
+                {{ form.password2.errors }}
+            </div>
+
+            <button type="submit">CREAR CUENTA</button>
+            
+            <div class="footer">
+                ¿Ya estás registrado? 
+                <a href="{% url 'login' %}">
+                    INICIAR SESIÓN
+                </a>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
