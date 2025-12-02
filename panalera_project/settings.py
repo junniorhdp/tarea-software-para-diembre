@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # 2. Cargar SECRET_KEY desde las variables de entorno
 # Si la clave no existe, el programa fallará, lo cual es más seguro que usar una clave pública.
-SECRET_KEY = 'django-insecure-9!kks=*q^#222h_^hn)+&+t^@#kt=if9y=)572k4p@4&l9m+ne'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # 3. Cargar DEBUG desde las variables de entorno (convirtiendo el string a booleano)
 # Por defecto, si no encuentra la variable, asume False.
