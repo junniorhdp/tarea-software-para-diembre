@@ -35,7 +35,7 @@ class Producto(models.Model):
         related_name='productos' 
     )
     
-    variacion = models.CharField(max_length=100, blank=True, null=True, verbose_name="Variación (ej. Tamaño o Tipo)") 
+    variacion = models.CharField(max_length=100, blank=True, verbose_name="Variación (ej. Tamaño o Tipo)") 
     
     precio = models.DecimalField(max_digits=10, decimal_places=0, verbose_name="Precio Unitario")
     stock = models.IntegerField(default=0, verbose_name="Stock Disponible")
